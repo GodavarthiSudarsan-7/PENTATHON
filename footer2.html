@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pentathon 3.0 — Footer</title>
+
+  <!-- Fonts: Rajdhani (angular sci-fi) + DM Mono (code-terminal) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Bebas+Neue&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN SYSTEM — Pentathon 3.0
+    ============================================================ */
+    :root {
+      --neon:    #a320ff;
+      --accent:  #d180ff;
+      --neon2:   #8c00e6;
+      --cyan:    #b366ff;
+      --bg:      linear-gradient(135deg, #1a0033, #0d001a);
+      --bg-dark: #0d001a;
+      --text:    rgba(224, 224, 224, 0.95);
+      --muted:   rgba(224, 224, 224, 0.7);
+      --glass:   rgba(40, 0, 80, 0.2);
+      --glass2:  rgba(30, 0, 60, 0.15);
+      --stroke:  rgba(163, 32, 255, 0.3);
+      --shadow:  0 18px 55px rgba(163, 32, 255, 0.25);
+
+      /* Extra tokens */
+      --glow-text: 0 0 12px rgba(163,32,255,0.9), 0 0 30px rgba(163,32,255,0.5);
+      --glow-box:  0 0 0 1px rgba(163,32,255,0.5), 0 8px 40px rgba(163,32,255,0.3);
+      --glow-hover:0 0 0 1px rgba(163,32,255,0.9), 0 0 30px rgba(163,32,255,0.5), 0 16px 60px rgba(163,32,255,0.3);
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    a { text-decoration: none; }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    /* ============================================================
+       FOOTER SHELL
+    ============================================================ */
+    footer {
+      position: relative;
+      background: var(--bg-dark);
+      overflow: hidden;
+    }
+
+    /* Canvas behind everything */
+    #hexCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grain texture overlay */
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      animation: grainShift 0.8s steps(1) infinite;
+    }
+
+    @keyframes grainShift {
+      0%   { transform: translate(0,0); }
+      25%  { transform: translate(-5px, 3px); }
+      50%  { transform: translate(4px, -2px); }
+      75%  { transform: translate(-2px, 5px); }
+      100% { transform: translate(3px, -4px); }
+    }
+
+    /* Top edge beam */
+    .top-beam {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--neon) 30%, var(--accent) 50%, var(--neon) 70%, transparent 100%);
+      box-shadow: 0 0 20px 2px rgba(163,32,255,0.6);
+      z-index: 2;
+    }
+
+    /* ============================================================
+       STAT TICKER — full-width strip above main content
+    ============================================================ */
+    .stat-ticker {
+      position: relative;
+      z-index: 3;
+      border-bottom: 1px solid var(--stroke);
+      background: rgba(20,0,40,0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      overflow: hidden;
+      height: 52px;
+      display: flex;
+      align-items: center;
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 0;
+      animation: tickerScroll 28s linear infinite;
+      white-space: nowrap;
+      will-change: transform;
+    }
+
+    .ticker-track:hover { animation-play-state: paused; }
+
+    @keyframes tickerScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 40px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      border-right: 1px solid var(--stroke);
+    }
+
+    .ticker-item .t-val {
+      color: var(--accent);
+      font-weight: 500;
+      text-shadow: var(--glow-text);
+    }
+
+    .ticker-item .t-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--neon);
+      box-shadow: 0 0 8px var(--neon);
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       MAIN CONTENT WRAPPER
+    ============================================================ */
+    .footer-wrap {
+      position: relative;
+      z-index: 3;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 70px 40px 0;
+    }
+
+    /* ============================================================
+       BIG EDITORIAL HEADING — "PENTATHON 3.0" as display type
+    ============================================================ */
+    .editorial-heading {
+      position: relative;
+      margin-bottom: 60px;
+      overflow: hidden;
+      padding-bottom: 32px;
+    }
+
+    .editorial-heading::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, var(--neon) 0%, transparent 60%);
+    }
+
+    .big-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      letter-spacing: 0.04em;
+      line-height: 0.9;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(163,32,255,0.5);
+      position: relative;
+      user-select: none;
+    }
+
+    /* Filled clone that slides in on load */
+    .big-title .filled {
+      position: absolute;
+      inset: 0;
+      color: transparent;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--neon) 50%, var(--neon2) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 16px rgba(163,32,255,0.7));
+      clip-path: inset(0 100% 0 0);
+      animation: titleReveal 1.4s cubic-bezier(0.76,0,0.24,1) 0.3s forwards;
+    }
+
+    @keyframes titleReveal {
+      to { clip-path: inset(0 0% 0 0); }
+    }
+
+    .tagline-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .tagline-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--stroke), transparent);
+    }
+
+    .tagline-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-transform: uppercase;
+      text-shadow: var(--glow-text);
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       GRID — asymmetric 3-col layout
+    ============================================================ */
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1.8fr;
+      gap: 2px; /* grid gap renders as border between cells */
+      background: var(--stroke);
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .grid-cell {
+      background: rgba(8, 0, 18, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 40px 36px;
+      transition: background 0.3s ease;
+    }
+
+    .grid-cell:hover {
+      background: rgba(30, 0, 58, 0.85);
+    }
+
+    /* ============================================================
+       CELL 1 — About + Description
+    ============================================================ */
+    .cell-about {}
+
+    .about-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      color: var(--neon);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .about-eyebrow::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--neon);
+      box-shadow: 0 0 6px var(--neon);
+    }
+
+    .about-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 380px;
+    }
+
+    /* Stat pills row */
+    .stat-pills {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px 20px;
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      background: var(--glass2);
+      min-width: 80px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+      cursor: default;
+    }
+
+    .stat-pill:hover {
+      border-color: rgba(163,32,255,0.8);
+      box-shadow: var(--glow-box);
+      transform: translateY(-3px);
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      line-height: 1;
+      color: var(--accent);
+      text-shadow: var(--glow-text);
+    }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ============================================================
+       CELL 2 — Navigation (vertical pill links)
+    ============================================================ */
+    .cell-nav {}
+
+    .cell-heading {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      color: var(--neon);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      text-shadow: var(--glow-text);
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-list li a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-list li a::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 0;
+      background: linear-gradient(90deg, rgba(163,32,255,0.15), transparent);
+      transition: width 0.3s ease;
+      border-radius: inherit;
+    }
+
+    .nav-list li a:hover::before { width: 100%; }
+
+    .nav-list li a:hover {
+      color: var(--accent);
+      border-color: rgba(163,32,255,0.5);
+      box-shadow: 0 0 20px rgba(163,32,255,0.15);
+    }
+
+    .nav-arrow {
+      font-size: 0.75rem;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.25s, transform 0.25s;
+      color: var(--neon);
+    }
+
+    .nav-list li a:hover .nav-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ============================================================
+       CELL 3 — Social + Newsletter (stacked)
+    ============================================================ */
+    .cell-social-news {}
+
+    /* Social icons — 2×2 grid */
+    .social-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      background: var(--glass2);
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      transition: all 0.28s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(163,32,255,0.15), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .social-btn:hover::after { opacity: 1; }
+
+    .social-btn:hover {
+      border-color: rgba(163,32,255,0.8);
+      box-shadow: var(--glow-hover);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .social-btn svg {
+      width: 17px; height: 17px;
+      fill: currentColor;
+      flex-shrink: 0;
+      transition: filter 0.28s;
+    }
+
+    .social-btn:hover svg {
+      filter: drop-shadow(0 0 5px rgba(163,32,255,0.9));
+    }
+
+    /* Divider inside cell */
+    .cell-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--stroke), transparent);
+      margin-bottom: 28px;
+    }
+
+    /* Newsletter */
+    .nl-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      color: var(--neon);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      text-shadow: var(--glow-text);
+    }
+
+    .nl-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .nl-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nl-input {
+      flex: 1;
+      background: rgba(20, 0, 40, 0.7);
+      border: 1px solid var(--stroke);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      min-width: 0;
+    }
+
+    .nl-input::placeholder { color: rgba(224,224,224,0.3); }
+
+    .nl-input:focus {
+      border-color: rgba(163,32,255,0.8);
+      box-shadow: 0 0 0 3px rgba(163,32,255,0.12), inset 0 0 10px rgba(163,32,255,0.05);
+    }
+
+    .nl-btn {
+      position: relative;
+      flex-shrink: 0;
+      padding: 11px 18px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--neon2) 0%, var(--neon) 60%, var(--accent) 100%);
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 4px 20px rgba(163,32,255,0.4);
+    }
+
+    .nl-btn::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -60%;
+      width: 50%; height: 200%;
+      background: rgba(255,255,255,0.18);
+      transform: skewX(-20deg);
+      transition: left 0.4s ease;
+    }
+
+    .nl-btn:hover::before { left: 120%; }
+    .nl-btn:hover { transform: translateY(-2px); box-shadow: var(--glow-hover); }
+    .nl-btn:active { transform: translateY(0); }
+
+    /* ============================================================
+       BOTTOM ZONE (full-width row)
+    ============================================================ */
+    .footer-bottom {
+      position: relative;
+      z-index: 3;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px 40px;
+    }
+
+    /* Bottom separator with ticking animation */
+    .bottom-sep {
+      position: relative;
+      height: 1px;
+      background: var(--stroke);
+      margin: 40px 0 28px;
+      overflow: visible;
+    }
+
+    .bottom-sep::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 0;
+      height: 3px;
+      width: 80px;
+      background: linear-gradient(90deg, transparent, var(--neon), var(--accent), transparent);
+      border-radius: 3px;
+      animation: scanLine 5s linear infinite;
+    }
+
+    @keyframes scanLine {
+      0%   { left: 0;    opacity: 1; }
+      90%  { opacity: 1; }
+      100% { left: calc(100% - 80px); opacity: 0; }
+    }
+
+    .bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .copyright {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .copyright em {
+      font-style: normal;
+      color: var(--accent);
+      text-shadow: var(--glow-text);
+    }
+
+    /* Live indicator */
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      padding: 6px 14px;
+      border: 1px solid var(--stroke);
+      border-radius: 40px;
+      background: var(--glass2);
+    }
+
+    .live-ring {
+      position: relative;
+      width: 8px; height: 8px;
+    }
+
+    .live-ring::before,
+    .live-ring::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: var(--neon);
+    }
+
+    .live-ring::before {
+      inset: 0;
+      box-shadow: 0 0 6px var(--neon);
+    }
+
+    .live-ring::after {
+      inset: -4px;
+      background: transparent;
+      border: 1px solid rgba(163,32,255,0.5);
+      animation: ringPulse 2s ease-out infinite;
+    }
+
+    @keyframes ringPulse {
+      0%   { transform: scale(0.6); opacity: 0.9; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    /* Bottom quick nav */
+    .bottom-nav {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .bottom-nav li a {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+
+    .bottom-nav li a:hover {
+      color: var(--accent);
+      text-shadow: var(--glow-text);
+    }
+
+    .bottom-nav li::after {
+      content: '·';
+      margin-left: 24px;
+      color: var(--stroke);
+    }
+
+    .bottom-nav li:last-child::after { display: none; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .cell-about {
+        grid-column: 1 / -1;
+        border-bottom: 1px solid var(--stroke);
+      }
+      .big-title { font-size: clamp(3.5rem, 12vw, 6rem); }
+    }
+
+    @media (max-width: 580px) {
+      .footer-wrap { padding: 48px 20px 0; }
+      .footer-bottom { padding: 0 20px 32px; }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .big-title { font-size: clamp(3rem, 15vw, 5rem); }
+
+      .nl-form { flex-direction: column; }
+      .social-grid { grid-template-columns: 1fr 1fr; }
+
+      .bottom-bar { flex-direction: column; align-items: flex-start; }
+      .bottom-nav { flex-wrap: wrap; gap: 12px; }
+      .bottom-nav li::after { display: none; }
+
+      .editorial-heading { margin-bottom: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================================================
+     PENTATHON 3.0 FOOTER
+================================================================ -->
+<footer>
+
+  <!-- Animated hex canvas -->
+  <canvas id="hexCanvas"></canvas>
+
+  <!-- Grain overlay -->
+  <div class="grain"></div>
+
+  <!-- Neon top beam -->
+  <div class="top-beam"></div>
+
+  <!-- ── STAT TICKER STRIP ───────────────────────────────── -->
+  <div class="stat-ticker" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack">
+      <!-- JS will duplicate these for infinite scroll -->
+      <div class="ticker-item"><span class="t-dot"></span>PARTICIPANTS <span class="t-val">1,800+</span></div>
+      <div class="ticker-item"><span class="t-dot"></span>PRIZE POOL <span class="t-val">₹5,00,000</span></div>
+      <div class="ticker-item"><span class="t-dot"></span>MENTOR SESSIONS <span class="t-val">24+</span></div>
+      <div class="ticker-item"><span class="t-dot"></span>HOURS <span class="t-val">36hr NON-STOP</span></div>
+      <div class="ticker-item"><span class="t-dot"></span>TRACKS <span class="t-val">06</span></div>
+      <div class="ticker-item"><span class="t-dot"></span>COLLEGES <span class="t-val">80+</span></div>
+      <div class="ticker-item"><span class="t-dot"></span>JUDGES <span class="t-val">15+ EXPERTS</span></div>
+      <div class="ticker-item"><span class="t-dot"></span>EDITION <span class="t-val">3.0</span></div>
+    </div>
+  </div>
+
+  <!-- ── MAIN CONTENT ────────────────────────────────────── -->
+  <div class="footer-wrap">
+
+    <!-- Editorial display heading -->
+    <div class="editorial-heading">
+      <div class="big-title" aria-label="Pentathon 3.0">
+        PENTATHON 3.0
+        <span class="filled" aria-hidden="true">PENTATHON 3.0</span>
+      </div>
+      <div class="tagline-row">
+        <div class="tagline-line"></div>
+        <span class="tagline-text">Build · Innovate · Dominate</span>
+        <div class="tagline-line" style="background: linear-gradient(270deg, var(--stroke), transparent);"></div>
+      </div>
+    </div>
+
+    <!-- 3-col asymmetric grid -->
+    <div class="footer-grid">
+
+      <!-- ① ABOUT CELL -->
+      <div class="grid-cell cell-about">
+        <div class="about-eyebrow">The Hackathon</div>
+        <p class="about-desc">
+          A 36-hour forge where raw code meets radical ideas.
+          Pentathon 3.0 is where tomorrow's builders come to break limits,
+          ship real products, and walk out legends. Hosted by SRM Institute of Science & Technology.
+        </p>
+
+        <!-- Live stat pills -->
+        <div class="stat-pills">
+          <div class="stat-pill">
+            <span class="stat-num" data-target="1800">0</span>
+            <span class="stat-label">Coders</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num" data-target="500">0</span>
+            <span class="stat-label">₹ Prize (K)</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num" data-target="36">0</span>
+            <span class="stat-label">Hours</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num" data-target="6">0</span>
+            <span class="stat-label">Tracks</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② NAVIGATION CELL -->
+      <div class="grid-cell cell-nav">
+        <div class="cell-heading">Navigate</div>
+        <ul class="nav-list">
+          <li><a href="#">Home <span class="nav-arrow">→</span></a></li>
+          <li><a href="#">About <span class="nav-arrow">→</span></a></li>
+          <li><a href="#">Events <span class="nav-arrow">→</span></a></li>
+          <li><a href="#">Tracks <span class="nav-arrow">→</span></a></li>
+          <li><a href="#">Team <span class="nav-arrow">→</span></a></li>
+          <li><a href="#">Sponsors <span class="nav-arrow">→</span></a></li>
+          <li><a href="#">Contact <span class="nav-arrow">→</span></a></li>
+        </ul>
+      </div>
+
+      <!-- ③ SOCIAL + NEWSLETTER CELL -->
+      <div class="grid-cell cell-social-news">
+        <div class="cell-heading">Connect</div>
+
+        <!-- 2x2 social grid -->
+        <div class="social-grid">
+
+          <!-- LinkedIn -->
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452H16.89v-5.569c0-1.328-.026-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a1.98 1.98 0 0 1-1.972-1.982c0-1.09.887-1.98 1.972-1.98 1.088 0 1.972.89 1.972 1.98a1.98 1.98 0 0 1-1.972 1.982zm1.932 13.019H3.404V9h3.865v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+
+          <!-- GitHub -->
+          <a href="#" class="social-btn" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            GitHub
+          </a>
+
+          <!-- Instagram -->
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            Instagram
+          </a>
+
+          <!-- Twitter/X -->
+          <a href="#" class="social-btn" aria-label="Twitter">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Twitter
+          </a>
+        </div>
+
+        <!-- Divider -->
+        <div class="cell-divider"></div>
+
+        <!-- Newsletter -->
+        <div class="nl-label">Stay in the loop</div>
+        <p class="nl-desc">Drops, deadlines, and disruption—straight to your inbox before anyone else gets it.</p>
+        <div class="nl-form">
+          <input type="email" class="nl-input" placeholder="your@email.com" aria-label="Email address" />
+          <button class="nl-btn" type="button">JOIN</button>
+        </div>
+      </div>
+
+    </div><!-- /footer-grid -->
+  </div><!-- /footer-wrap -->
+
+  <!-- ── BOTTOM BAR ──────────────────────────────────────── -->
+  <div class="footer-bottom">
+    <div class="bottom-sep"></div>
+    <div class="bottom-bar">
+
+      <span class="copyright">
+        © 2025 <em>Pentathon 3.0</em> · SRM Institute of Science &amp; Technology · All rights reserved
+      </span>
+
+      <ul class="bottom-nav" aria-label="Legal links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Code of Conduct</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+
+      <div class="live-badge" aria-label="Systems online">
+        <span class="live-ring"></span>
+        SYSTEMS ONLINE
+      </div>
+    </div>
+  </div>
+
+</footer>
+
+<!-- ================================================================
+     JAVASCRIPT
+================================================================ -->
+<script>
+  /* ----------------------------------------------------------
+     1. CANVAS HEX GRID — animated, breathing hexagons
+  ---------------------------------------------------------- */
+  (function () {
+    const canvas = document.getElementById('hexCanvas');
+    const ctx = canvas.getContext('2d');
+    const HEX_SIZE = 34;
+    const HEX_GAP = 3;
+    let W, H, hexes = [];
+    const NEON = 'rgba(163,32,255,';
+
+    function resize() {
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+      buildGrid();
+    }
+
+    function hexCorner(cx, cy, size, i) {
+      const ang = Math.PI / 180 * (60 * i - 30);
+      return [cx + size * Math.cos(ang), cy + size * Math.sin(ang)];
+    }
+
+    function buildGrid() {
+      hexes = [];
+      const eff = HEX_SIZE + HEX_GAP;
+      const cols = Math.ceil(W / (eff * 1.732)) + 2;
+      const rows = Math.ceil(H / (eff * 1.5)) + 2;
+      for (let r = -1; r < rows; r++) {
+        for (let c = -1; c < cols; c++) {
+          const x = c * eff * 1.732 + (r % 2 === 0 ? 0 : eff * 0.866);
+          const y = r * eff * 1.5;
+          hexes.push({
+            x, y,
+            phase: Math.random() * Math.PI * 2,
+            speed: 0.003 + Math.random() * 0.004,
+            maxAlpha: 0.04 + Math.random() * 0.1,
+          });
+        }
+      }
+    }
+
+    function draw(t) {
+      ctx.clearRect(0, 0, W, H);
+      hexes.forEach(h => {
+        const alpha = h.maxAlpha * (0.4 + 0.6 * Math.sin(h.phase + t * h.speed));
+        h.phase += 0.005;
+
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const [px, py] = hexCorner(h.x, h.y, HEX_SIZE, i);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = NEON + alpha + ')';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      });
+      requestAnimationFrame(draw);
+    }
+
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas.parentElement);
+    resize();
+    requestAnimationFrame(draw);
+  })();
+
+  /* ----------------------------------------------------------
+     2. TICKER DUPLICATION for seamless infinite scroll
+  ---------------------------------------------------------- */
+  (function () {
+    const track = document.getElementById('tickerTrack');
+    track.innerHTML += track.innerHTML; // duplicate for loop
+  })();
+
+  /* ----------------------------------------------------------
+     3. COUNT-UP ANIMATION for stat pills
+  ---------------------------------------------------------- */
+  (function () {
+    const els = document.querySelectorAll('.stat-num[data-target]');
+    const observed = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseInt(el.dataset.target, 10);
+        const duration = 1600;
+        const step = 16;
+        const steps = duration / step;
+        const increment = target / steps;
+        let current = 0;
+        const timer = setInterval(() => {
+          current = Math.min(current + increment, target);
+          el.textContent = Math.round(current).toLocaleString();
+          if (current >= target) {
+            el.textContent = target.toLocaleString();
+            clearInterval(timer);
+          }
+        }, step);
+        observed.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    els.forEach(el => observed.observe(el));
+  })();
+</script>
+
+</body>
+</html>
