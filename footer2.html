@@ -5,586 +5,577 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pentathon 3.0 — Footer</title>
 
-  <!-- Fonts: Rajdhani (angular sci-fi) + DM Mono (code-terminal) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
-    /* ============================================================
-       DESIGN SYSTEM — Pentathon 3.0
-    ============================================================ */
+    /* =========================================================
+       🎨 DESIGN SYSTEM — Pentathon 3.0  (DO NOT CHANGE)
+    ========================================================= */
     :root {
-      --neon:    #a320ff;
-      --accent:  #d180ff;
-      --neon2:   #8c00e6;
-      --cyan:    #b366ff;
-      --bg:      linear-gradient(135deg, #1a0033, #0d001a);
-      --bg-dark: #0d001a;
-      --text:    rgba(224, 224, 224, 0.95);
-      --muted:   rgba(224, 224, 224, 0.7);
-      --glass:   rgba(40, 0, 80, 0.2);
-      --glass2:  rgba(30, 0, 60, 0.15);
-      --stroke:  rgba(163, 32, 255, 0.3);
-      --shadow:  0 18px 55px rgba(163, 32, 255, 0.25);
+      --neon:        #a320ff;
+      --accent:      #d180ff;
+      --neon2:       #8c00e6;
+      --cyan:        #b366ff;
 
-      /* Extra tokens */
-      --glow-text: 0 0 12px rgba(163,32,255,0.9), 0 0 30px rgba(163,32,255,0.5);
-      --glow-box:  0 0 0 1px rgba(163,32,255,0.5), 0 8px 40px rgba(163,32,255,0.3);
-      --glow-hover:0 0 0 1px rgba(163,32,255,0.9), 0 0 30px rgba(163,32,255,0.5), 0 16px 60px rgba(163,32,255,0.3);
+      --bg:          linear-gradient(135deg, #1a0033, #0d001a);
+      --bg-dark:     #0d001a;
+
+      --text:        rgba(224, 224, 224, 0.95);
+      --muted:       rgba(224, 224, 224, 0.70);
+
+      --glass:       rgba(40,  0,  80, 0.20);
+      --glass2:      rgba(30,  0,  60, 0.15);
+      --stroke:      rgba(163, 32, 255, 0.30);
+      --shadow:      0 18px 55px rgba(163, 32, 255, 0.25);
+
+      --glow-strong: 0 0 8px  rgba(163,32,255,0.85),
+                     0 0 20px rgba(163,32,255,0.45),
+                     0 0 50px rgba(163,32,255,0.25);
+      --glow-soft:   0 0 6px  rgba(163,32,255,0.50),
+                     0 0 18px rgba(163,32,255,0.25);
+      --glow-hover:  0 0 12px rgba(163,32,255,0.85),
+                     0 0 30px rgba(163,32,255,0.55),
+                     0 0 60px rgba(163,32,255,0.25);
     }
 
-    /* ============================================================
+    /* =========================================================
        RESET
-    ============================================================ */
+    ========================================================= */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     a { text-decoration: none; }
 
     body {
       background: var(--bg);
       min-height: 100vh;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Syne', sans-serif;
       color: var(--text);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
     }
 
-    /* ============================================================
+    /* =========================================================
        FOOTER SHELL
-    ============================================================ */
+    ========================================================= */
     footer {
       position: relative;
       background: var(--bg-dark);
+      border-top: 1px solid var(--stroke);
       overflow: hidden;
     }
 
-    /* Canvas behind everything */
-    #hexCanvas {
+    /* Scanline texture */
+    footer::before {
+      content: '';
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.35;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,          transparent 2px,
+        rgba(163,32,255,0.015) 2px,
+        rgba(163,32,255,0.015) 4px
+      );
       pointer-events: none;
       z-index: 0;
     }
 
-    /* Grain texture overlay */
-    .grain {
+    /* Bottom radial bloom */
+    footer::after {
+      content: '';
+      position: absolute;
+      bottom: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 400px;
+      background: radial-gradient(ellipse at center,
+        rgba(163,32,255,0.20) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Particle canvas */
+    #particleCanvas {
       position: absolute;
       inset: 0;
+      width: 100%; height: 100%;
       pointer-events: none;
-      z-index: 1;
-      opacity: 0.06;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 180px 180px;
-      animation: grainShift 0.8s steps(1) infinite;
+      z-index: 0;
+      opacity: 0.45;
     }
 
-    @keyframes grainShift {
-      0%   { transform: translate(0,0); }
-      25%  { transform: translate(-5px, 3px); }
-      50%  { transform: translate(4px, -2px); }
-      75%  { transform: translate(-2px, 5px); }
-      100% { transform: translate(3px, -4px); }
-    }
-
-    /* Top edge beam */
-    .top-beam {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--neon) 30%, var(--accent) 50%, var(--neon) 70%, transparent 100%);
-      box-shadow: 0 0 20px 2px rgba(163,32,255,0.6);
-      z-index: 2;
-    }
-
-    /* ============================================================
-       STAT TICKER — full-width strip above main content
-    ============================================================ */
-    .stat-ticker {
+    /* =========================================================
+       WRAPPER
+    ========================================================= */
+    .footer-inner {
       position: relative;
-      z-index: 3;
-      border-bottom: 1px solid var(--stroke);
-      background: rgba(20,0,40,0.6);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 64px 32px 40px;
+    }
+
+    /* =========================================================
+       4-COLUMN GRID
+    ========================================================= */
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.7fr 1fr 1fr 1.4fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    /* =========================================================
+       GLASS CARD
+    ========================================================= */
+    .glass-card {
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 30px 26px;
+      transition: border-color .35s, box-shadow .35s, transform .35s;
+      position: relative;
       overflow: hidden;
-      height: 52px;
+    }
+
+    /* Shine sweep */
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: -100%; left: -60%;
+      width: 40%; height: 300%;
+      background: linear-gradient(105deg, transparent, rgba(163,32,255,0.08), transparent);
+      transform: skewX(-15deg);
+      transition: left .6s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glass-card:hover::before { left: 130%; }
+
+    .glass-card:hover {
+      border-color: rgba(163,32,255,0.70);
+      box-shadow: var(--shadow), inset 0 0 28px rgba(163,32,255,0.04);
+      transform: translateY(-3px);
+    }
+
+    .glass-card > * { position: relative; z-index: 1; }
+
+    /* =========================================================
+       ① BRAND
+    ========================================================= */
+    .brand-logo-row {
       display: flex;
       align-items: center;
+      gap: 13px;
+      margin-bottom: 10px;
     }
 
-    .ticker-track {
-      display: flex;
-      gap: 0;
-      animation: tickerScroll 28s linear infinite;
-      white-space: nowrap;
-      will-change: transform;
+    .brand-hex {
+      width: 42px; height: 42px;
+      flex-shrink: 0;
+      animation: hexPulse 3s ease-in-out infinite;
     }
 
-    .ticker-track:hover { animation-play-state: paused; }
-
-    @keyframes tickerScroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+    @keyframes hexPulse {
+      0%,100% { filter: drop-shadow(0 0 5px rgba(163,32,255,.7)); }
+      50%      { filter: drop-shadow(0 0 14px rgba(163,32,255,1))
+                         drop-shadow(0 0 28px rgba(163,32,255,.5)); }
     }
 
-    .ticker-item {
-      display: flex;
+    .brand-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.55rem;
+      font-weight: 900;
+      letter-spacing: .06em;
+      background: linear-gradient(135deg, var(--accent), var(--neon));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 8px rgba(163,32,255,.85))
+              drop-shadow(0 0 20px rgba(163,32,255,.45));
+      line-height: 1.2;
+    }
+
+    .brand-badge {
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 0 40px;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      border-right: 1px solid var(--stroke);
-    }
-
-    .ticker-item .t-val {
+      gap: 6px;
+      font-family: 'Orbitron', monospace;
+      font-size: .52rem;
+      font-weight: 600;
+      letter-spacing: .2em;
       color: var(--accent);
-      font-weight: 500;
-      text-shadow: var(--glow-text);
+      background: rgba(163,32,255,.10);
+      border: 1px solid var(--stroke);
+      border-radius: 4px;
+      padding: 4px 10px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
     }
-
-    .ticker-item .t-dot {
+    .brand-badge::before {
+      content: '';
       width: 5px; height: 5px;
       border-radius: 50%;
       background: var(--neon);
-      box-shadow: 0 0 8px var(--neon);
-      flex-shrink: 0;
+      box-shadow: 0 0 6px var(--neon);
+      animation: pulse 2s ease-in-out infinite;
     }
 
-    /* ============================================================
-       MAIN CONTENT WRAPPER
-    ============================================================ */
-    .footer-wrap {
-      position: relative;
-      z-index: 3;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 70px 40px 0;
+    .brand-desc {
+      font-size: .9rem;
+      line-height: 1.8;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 20px;
     }
 
-    /* ============================================================
-       BIG EDITORIAL HEADING — "PENTATHON 3.0" as display type
-    ============================================================ */
-    .editorial-heading {
-      position: relative;
-      margin-bottom: 60px;
-      overflow: hidden;
-      padding-bottom: 32px;
+    /* Stat chips */
+    .brand-stats {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
     }
 
-    .editorial-heading::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 100%; height: 1px;
-      background: linear-gradient(90deg, var(--neon) 0%, transparent 60%);
+    .stat-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 13px;
+      border: 1px solid var(--stroke);
+      border-radius: 10px;
+      background: rgba(163,32,255,.06);
+      transition: border-color .3s, box-shadow .3s, transform .3s;
+      cursor: default;
+    }
+    .stat-chip:hover {
+      border-color: rgba(163,32,255,.7);
+      box-shadow: var(--glow-soft);
+      transform: translateY(-2px);
+    }
+    .stat-chip-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: var(--glow-soft);
+      line-height: 1;
+    }
+    .stat-chip-label {
+      font-size: .56rem;
+      letter-spacing: .12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 3px;
     }
 
-    .big-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(4rem, 10vw, 9rem);
-      letter-spacing: 0.04em;
-      line-height: 0.9;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(163,32,255,0.5);
-      position: relative;
-      user-select: none;
+    .brand-divider {
+      width: 55px; height: 2px;
+      background: linear-gradient(90deg, var(--neon), transparent);
+      border-radius: 2px;
+      box-shadow: var(--glow-soft);
     }
 
-    /* Filled clone that slides in on load */
-    .big-title .filled {
-      position: absolute;
-      inset: 0;
-      color: transparent;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--neon) 50%, var(--neon2) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 16px rgba(163,32,255,0.7));
-      clip-path: inset(0 100% 0 0);
-      animation: titleReveal 1.4s cubic-bezier(0.76,0,0.24,1) 0.3s forwards;
-    }
-
-    @keyframes titleReveal {
-      to { clip-path: inset(0 0% 0 0); }
-    }
-
-    .tagline-row {
+    /* =========================================================
+       ② QUICK LINKS
+    ========================================================= */
+    .footer-heading {
+      font-family: 'Orbitron', monospace;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .25em;
+      color: var(--accent);
+      text-transform: uppercase;
+      text-shadow: var(--glow-soft);
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 16px;
-      margin-top: 12px;
+      gap: 10px;
     }
-
-    .tagline-line {
+    .footer-heading::after {
+      content: '';
       flex: 1;
       height: 1px;
       background: linear-gradient(90deg, var(--stroke), transparent);
     }
 
-    .tagline-text {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.3em;
-      color: var(--accent);
-      text-transform: uppercase;
-      text-shadow: var(--glow-text);
-      white-space: nowrap;
-    }
-
-    /* ============================================================
-       GRID — asymmetric 3-col layout
-    ============================================================ */
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1.2fr 1.8fr;
-      gap: 2px; /* grid gap renders as border between cells */
-      background: var(--stroke);
-      border: 1px solid var(--stroke);
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    .grid-cell {
-      background: rgba(8, 0, 18, 0.82);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 40px 36px;
-      transition: background 0.3s ease;
-    }
-
-    .grid-cell:hover {
-      background: rgba(30, 0, 58, 0.85);
-    }
-
-    /* ============================================================
-       CELL 1 — About + Description
-    ============================================================ */
-    .cell-about {}
-
-    .about-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.25em;
-      color: var(--neon);
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-
-    .about-eyebrow::before {
-      content: '';
-      display: block;
-      width: 20px; height: 1px;
-      background: var(--neon);
-      box-shadow: 0 0 6px var(--neon);
-    }
-
-    .about-desc {
-      font-size: 1rem;
-      font-weight: 300;
-      line-height: 1.8;
-      color: var(--muted);
-      margin-bottom: 32px;
-      max-width: 380px;
-    }
-
-    /* Stat pills row */
-    .stat-pills {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .stat-pill {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 14px 20px;
-      border: 1px solid var(--stroke);
-      border-radius: 12px;
-      background: var(--glass2);
-      min-width: 80px;
-      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-      cursor: default;
-    }
-
-    .stat-pill:hover {
-      border-color: rgba(163,32,255,0.8);
-      box-shadow: var(--glow-box);
-      transform: translateY(-3px);
-    }
-
-    .stat-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.7rem;
-      line-height: 1;
-      color: var(--accent);
-      text-shadow: var(--glow-text);
-    }
-
-    .stat-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.58rem;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-top: 4px;
-    }
-
-    /* ============================================================
-       CELL 2 — Navigation (vertical pill links)
-    ============================================================ */
-    .cell-nav {}
-
-    .cell-heading {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.28em;
-      color: var(--neon);
-      text-transform: uppercase;
-      margin-bottom: 28px;
-      text-shadow: var(--glow-text);
-    }
-
-    .nav-list {
+    .footer-links {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
-
-    .nav-list li a {
+    .footer-links li a {
+      color: var(--muted);
+      font-size: .9rem;
+      font-weight: 400;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 16px;
+      padding: 9px 12px;
       border-radius: 10px;
       border: 1px solid transparent;
-      color: var(--muted);
-      font-size: 1rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      transition: all 0.25s ease;
+      transition: all .25s ease;
       position: relative;
       overflow: hidden;
     }
-
-    .nav-list li a::before {
+    .footer-links li a::before {
       content: '';
       position: absolute;
       left: 0; top: 0; bottom: 0;
       width: 0;
-      background: linear-gradient(90deg, rgba(163,32,255,0.15), transparent);
-      transition: width 0.3s ease;
+      background: linear-gradient(90deg, rgba(163,32,255,.12), transparent);
+      transition: width .3s ease;
       border-radius: inherit;
     }
-
-    .nav-list li a:hover::before { width: 100%; }
-
-    .nav-list li a:hover {
+    .footer-links li a:hover::before { width: 100%; }
+    .footer-links li a:hover {
       color: var(--accent);
-      border-color: rgba(163,32,255,0.5);
-      box-shadow: 0 0 20px rgba(163,32,255,0.15);
+      border-color: rgba(163,32,255,.35);
+      text-shadow: 0 0 10px rgba(163,32,255,.5);
     }
-
-    .nav-arrow {
-      font-size: 0.75rem;
+    .link-arrow {
+      font-size: .75rem;
       opacity: 0;
       transform: translateX(-6px);
-      transition: opacity 0.25s, transform 0.25s;
+      transition: opacity .25s, transform .25s;
       color: var(--neon);
     }
-
-    .nav-list li a:hover .nav-arrow {
+    .footer-links li a:hover .link-arrow {
       opacity: 1;
       transform: translateX(0);
     }
 
-    /* ============================================================
-       CELL 3 — Social + Newsletter (stacked)
-    ============================================================ */
-    .cell-social-news {}
-
-    /* Social icons — 2×2 grid */
+    /* =========================================================
+       ③ CONNECT / SOCIAL
+    ========================================================= */
     .social-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
     }
 
-    .social-btn {
+    .social-link {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 14px 16px;
-      border: 1px solid var(--stroke);
-      border-radius: 12px;
-      background: var(--glass2);
+      gap: 12px;
       color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      transition: all 0.28s ease;
+      font-size: .88rem;
+      font-weight: 400;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background: var(--glass2);
+      transition: all .28s ease;
       position: relative;
       overflow: hidden;
     }
-
-    .social-btn::after {
+    .social-link::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, rgba(163,32,255,0.15), transparent 70%);
+      background: radial-gradient(circle at 30% 50%, rgba(163,32,255,.12), transparent 70%);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity .3s;
     }
+    .social-link:hover::after { opacity: 1; }
 
-    .social-btn:hover::after { opacity: 1; }
-
-    .social-btn:hover {
-      border-color: rgba(163,32,255,0.8);
-      box-shadow: var(--glow-hover);
-      color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    .social-btn svg {
-      width: 17px; height: 17px;
-      fill: currentColor;
+    /* filled SVG icons */
+    .social-link .icon-fill {
+      width: 18px; height: 18px;
+      fill: var(--cyan);
       flex-shrink: 0;
-      transition: filter 0.28s;
+      transition: filter .28s, fill .28s;
+    }
+    /* stroke SVG icons (Gmail, Register) */
+    .social-link .icon-stroke {
+      width: 18px; height: 18px;
+      fill: none;
+      stroke: var(--cyan);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      transition: filter .28s, stroke .28s;
     }
 
-    .social-btn:hover svg {
-      filter: drop-shadow(0 0 5px rgba(163,32,255,0.9));
+    .social-link:hover {
+      color: var(--accent);
+      border-color: rgba(163,32,255,.7);
+      background: rgba(163,32,255,.08);
+      box-shadow: var(--glow-soft), inset 0 0 14px rgba(163,32,255,.06);
+      transform: translateX(5px);
+    }
+    .social-link:hover .icon-fill {
+      fill: var(--accent);
+      filter: drop-shadow(0 0 6px rgba(163,32,255,.9));
+    }
+    .social-link:hover .icon-stroke {
+      stroke: var(--accent);
+      filter: drop-shadow(0 0 6px rgba(163,32,255,.9));
     }
 
-    /* Divider inside cell */
-    .cell-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--stroke), transparent);
-      margin-bottom: 28px;
+    .social-label { flex: 1; line-height: 1.25; }
+
+    .social-handle {
+      display: block;
+      font-size: .63rem;
+      color: rgba(224,224,224,.38);
+      letter-spacing: .07em;
+      margin-top: 2px;
+      transition: color .28s;
+    }
+    .social-link:hover .social-handle { color: rgba(209,128,255,.6); }
+
+    /* Register CTA gets a subtle purple tint */
+    .social-link.cta-register {
+      background: linear-gradient(135deg,
+        rgba(163,32,255,.13), rgba(140,0,230,.07));
+      border-color: rgba(163,32,255,.38);
+    }
+    .social-link.cta-register:hover {
+      background: linear-gradient(135deg,
+        rgba(163,32,255,.24), rgba(140,0,230,.14));
+      border-color: rgba(163,32,255,.9);
+      box-shadow: var(--glow-hover);
     }
 
-    /* Newsletter */
-    .nl-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.28em;
-      color: var(--neon);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      text-shadow: var(--glow-text);
-    }
-
-    .nl-desc {
-      font-size: 0.88rem;
+    /* =========================================================
+       ④ NEWSLETTER
+    ========================================================= */
+    .newsletter-desc {
+      font-size: .88rem;
       color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 20px;
       font-weight: 300;
-      line-height: 1.6;
-      margin-bottom: 16px;
     }
-
-    .nl-form {
+    .newsletter-form {
       display: flex;
-      gap: 8px;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .nl-input {
-      flex: 1;
-      background: rgba(20, 0, 40, 0.7);
+    .input-wrapper { position: relative; }
+    .input-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--neon), var(--accent), var(--neon2));
+      opacity: 0;
+      transition: opacity .3s;
+      z-index: 0;
+    }
+    .input-wrapper:focus-within::before { opacity: 1; }
+
+    .newsletter-input {
+      position: relative; z-index: 1;
+      background: rgba(20,0,40,.75);
       border: 1px solid var(--stroke);
       border-radius: 10px;
-      padding: 11px 14px;
+      padding: 12px 16px;
       color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
+      font-family: 'Syne', sans-serif;
+      font-size: .88rem;
       outline: none;
-      transition: border-color 0.25s, box-shadow 0.25s;
-      min-width: 0;
+      width: 100%;
+      transition: border-color .25s, box-shadow .25s;
+    }
+    .newsletter-input::placeholder { color: rgba(224,224,224,.3); }
+    .newsletter-input:focus {
+      border-color: transparent;
+      box-shadow: 0 0 0 1px var(--neon), var(--glow-soft),
+                  inset 0 0 12px rgba(163,32,255,.05);
     }
 
-    .nl-input::placeholder { color: rgba(224,224,224,0.3); }
-
-    .nl-input:focus {
-      border-color: rgba(163,32,255,0.8);
-      box-shadow: 0 0 0 3px rgba(163,32,255,0.12), inset 0 0 10px rgba(163,32,255,0.05);
-    }
-
-    .nl-btn {
+    .newsletter-btn {
       position: relative;
-      flex-shrink: 0;
-      padding: 11px 18px;
+      padding: 13px 20px;
+      background: linear-gradient(135deg, var(--neon2), var(--neon), var(--accent));
+      background-size: 200% 200%;
       border: none;
       border-radius: 10px;
-      background: linear-gradient(135deg, var(--neon2) 0%, var(--neon) 60%, var(--accent) 100%);
       color: #fff;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.12em;
+      font-family: 'Orbitron', monospace;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
       cursor: pointer;
       overflow: hidden;
-      transition: transform 0.25s, box-shadow 0.25s;
-      box-shadow: 0 4px 20px rgba(163,32,255,0.4);
+      transition: transform .3s, box-shadow .3s;
+      box-shadow: 0 4px 24px rgba(163,32,255,.45);
+      animation: gradientShift 4s ease infinite;
     }
-
-    .nl-btn::before {
+    @keyframes gradientShift {
+      0%,100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+    .newsletter-btn::before {
       content: '';
       position: absolute;
       top: -50%; left: -60%;
       width: 50%; height: 200%;
-      background: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,.15);
       transform: skewX(-20deg);
-      transition: left 0.4s ease;
+      transition: left .45s ease;
+    }
+    .newsletter-btn:hover::before { left: 130%; }
+    .newsletter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow-hover), 0 8px 32px rgba(163,32,255,.55);
+    }
+    .newsletter-btn:active { transform: translateY(0); }
+
+    .newsletter-note {
+      font-size: .68rem;
+      color: rgba(224,224,224,.3);
+      text-align: center;
+      letter-spacing: .04em;
     }
 
-    .nl-btn:hover::before { left: 120%; }
-    .nl-btn:hover { transform: translateY(-2px); box-shadow: var(--glow-hover); }
-    .nl-btn:active { transform: translateY(0); }
-
-    /* ============================================================
-       BOTTOM ZONE (full-width row)
-    ============================================================ */
-    .footer-bottom {
+    /* =========================================================
+       SEPARATOR  — scanning beam
+    ========================================================= */
+    .footer-separator {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(163,32,255,.40) 20%,
+        rgba(163,32,255,.90) 50%,
+        rgba(163,32,255,.40) 80%,
+        transparent
+      );
+      margin: 48px 0 28px;
       position: relative;
-      z-index: 3;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 40px 40px;
+      box-shadow: 0 0 14px rgba(163,32,255,.40);
     }
-
-    /* Bottom separator with ticking animation */
-    .bottom-sep {
-      position: relative;
-      height: 1px;
-      background: var(--stroke);
-      margin: 40px 0 28px;
-      overflow: visible;
-    }
-
-    .bottom-sep::before {
+    .footer-separator::after {
       content: '';
       position: absolute;
       top: -1px; left: 0;
-      height: 3px;
-      width: 80px;
-      background: linear-gradient(90deg, transparent, var(--neon), var(--accent), transparent);
+      height: 3px; width: 100px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
       border-radius: 3px;
-      animation: scanLine 5s linear infinite;
+      animation: scanBeam 4s linear infinite;
+    }
+    @keyframes scanBeam {
+      0%   { left: 0;                   opacity: 1; }
+      85%  {                             opacity: 1; }
+      100% { left: calc(100% - 100px);  opacity: 0; }
     }
 
-    @keyframes scanLine {
-      0%   { left: 0;    opacity: 1; }
-      90%  { opacity: 1; }
-      100% { left: calc(100% - 80px); opacity: 0; }
+    /* =========================================================
+       BOTTOM BAR
+    ========================================================= */
+    .footer-bottom {
+      position: relative; z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px 36px;
     }
 
     .bottom-bar {
@@ -596,397 +587,332 @@
     }
 
     .copyright {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
+      font-size: .8rem;
       color: var(--muted);
-      letter-spacing: 0.06em;
+      font-weight: 300;
+      letter-spacing: .04em;
     }
-
-    .copyright em {
-      font-style: normal;
+    .copyright span {
       color: var(--accent);
-      text-shadow: var(--glow-text);
+      font-weight: 600;
+      text-shadow: var(--glow-soft);
     }
 
-    /* Live indicator */
-    .live-badge {
-      display: inline-flex;
+    .bottom-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+    .bottom-nav li a {
+      font-size: .76rem;
+      color: rgba(224,224,224,.4);
+      letter-spacing: .06em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: color .2s, background .2s;
+    }
+    .bottom-nav li a:hover {
+      color: var(--accent);
+      background: rgba(163,32,255,.1);
+    }
+    .bottom-nav li + li::before {
+      content: '·';
+      color: var(--stroke);
+      margin-right: 4px;
+    }
+
+    .status-dot {
+      display: flex;
       align-items: center;
       gap: 8px;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
+      font-size: .68rem;
       color: var(--muted);
+      font-family: 'Orbitron', monospace;
+      letter-spacing: .12em;
       padding: 6px 14px;
       border: 1px solid var(--stroke);
       border-radius: 40px;
       background: var(--glass2);
     }
-
-    .live-ring {
-      position: relative;
-      width: 8px; height: 8px;
-    }
-
-    .live-ring::before,
-    .live-ring::after {
-      content: '';
-      position: absolute;
+    .dot {
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: var(--neon);
+      box-shadow: 0 0 8px rgba(163,32,255,.9), 0 0 20px rgba(163,32,255,.5);
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .4; transform: scale(.65); }
     }
 
-    .live-ring::before {
-      inset: 0;
-      box-shadow: 0 0 6px var(--neon);
-    }
-
-    .live-ring::after {
-      inset: -4px;
-      background: transparent;
-      border: 1px solid rgba(163,32,255,0.5);
-      animation: ringPulse 2s ease-out infinite;
-    }
-
-    @keyframes ringPulse {
-      0%   { transform: scale(0.6); opacity: 0.9; }
-      100% { transform: scale(2); opacity: 0; }
-    }
-
-    /* Bottom quick nav */
-    .bottom-nav {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-      align-items: center;
-    }
-
-    .bottom-nav li a {
-      font-size: 0.8rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      transition: color 0.2s, text-shadow 0.2s;
-    }
-
-    .bottom-nav li a:hover {
-      color: var(--accent);
-      text-shadow: var(--glow-text);
-    }
-
-    .bottom-nav li::after {
-      content: '·';
-      margin-left: 24px;
-      color: var(--stroke);
-    }
-
-    .bottom-nav li:last-child::after { display: none; }
-
-    /* ============================================================
+    /* =========================================================
        RESPONSIVE
-    ============================================================ */
-    @media (max-width: 900px) {
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .cell-about {
-        grid-column: 1 / -1;
-        border-bottom: 1px solid var(--stroke);
-      }
-      .big-title { font-size: clamp(3.5rem, 12vw, 6rem); }
+    ========================================================= */
+    @media (max-width: 960px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .brand-section { grid-column: 1 / -1; }
     }
-
     @media (max-width: 580px) {
-      .footer-wrap { padding: 48px 20px 0; }
-      .footer-bottom { padding: 0 20px 32px; }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .big-title { font-size: clamp(3rem, 15vw, 5rem); }
-
-      .nl-form { flex-direction: column; }
-      .social-grid { grid-template-columns: 1fr 1fr; }
-
-      .bottom-bar { flex-direction: column; align-items: flex-start; }
-      .bottom-nav { flex-wrap: wrap; gap: 12px; }
-      .bottom-nav li::after { display: none; }
-
-      .editorial-heading { margin-bottom: 36px; }
+      .footer-inner  { padding: 48px 20px 32px; }
+      .footer-bottom { padding: 0 20px 28px; }
+      .footer-grid   { grid-template-columns: 1fr; gap: 16px; }
+      .brand-title   { font-size: 1.3rem; }
+      .bottom-bar    { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .bottom-nav    { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
 
-<!-- ================================================================
-     PENTATHON 3.0 FOOTER
-================================================================ -->
 <footer>
 
-  <!-- Animated hex canvas -->
-  <canvas id="hexCanvas"></canvas>
+  <canvas id="particleCanvas"></canvas>
 
-  <!-- Grain overlay -->
-  <div class="grain"></div>
-
-  <!-- Neon top beam -->
-  <div class="top-beam"></div>
-
-  <!-- ── STAT TICKER STRIP ───────────────────────────────── -->
-  <div class="stat-ticker" aria-hidden="true">
-    <div class="ticker-track" id="tickerTrack">
-      <!-- JS will duplicate these for infinite scroll -->
-      <div class="ticker-item"><span class="t-dot"></span>PARTICIPANTS <span class="t-val">1,800+</span></div>
-      <div class="ticker-item"><span class="t-dot"></span>PRIZE POOL <span class="t-val">₹5,00,000</span></div>
-      <div class="ticker-item"><span class="t-dot"></span>MENTOR SESSIONS <span class="t-val">24+</span></div>
-      <div class="ticker-item"><span class="t-dot"></span>HOURS <span class="t-val">36hr NON-STOP</span></div>
-      <div class="ticker-item"><span class="t-dot"></span>TRACKS <span class="t-val">06</span></div>
-      <div class="ticker-item"><span class="t-dot"></span>COLLEGES <span class="t-val">80+</span></div>
-      <div class="ticker-item"><span class="t-dot"></span>JUDGES <span class="t-val">15+ EXPERTS</span></div>
-      <div class="ticker-item"><span class="t-dot"></span>EDITION <span class="t-val">3.0</span></div>
-    </div>
-  </div>
-
-  <!-- ── MAIN CONTENT ────────────────────────────────────── -->
-  <div class="footer-wrap">
-
-    <!-- Editorial display heading -->
-    <div class="editorial-heading">
-      <div class="big-title" aria-label="Pentathon 3.0">
-        PENTATHON 3.0
-        <span class="filled" aria-hidden="true">PENTATHON 3.0</span>
-      </div>
-      <div class="tagline-row">
-        <div class="tagline-line"></div>
-        <span class="tagline-text">Build · Innovate · Dominate</span>
-        <div class="tagline-line" style="background: linear-gradient(270deg, var(--stroke), transparent);"></div>
-      </div>
-    </div>
-
-    <!-- 3-col asymmetric grid -->
+  <!-- ══════════════════════════════════════════════
+       MAIN GRID
+  ══════════════════════════════════════════════ -->
+  <div class="footer-inner">
     <div class="footer-grid">
 
-      <!-- ① ABOUT CELL -->
-      <div class="grid-cell cell-about">
-        <div class="about-eyebrow">The Hackathon</div>
-        <p class="about-desc">
-          A 36-hour forge where raw code meets radical ideas.
-          Pentathon 3.0 is where tomorrow's builders come to break limits,
-          ship real products, and walk out legends. Hosted by SRM Institute of Science & Technology.
+      <!-- ①  BRAND ──────────────────────────────── -->
+      <div class="glass-card brand-section">
+
+        <div class="brand-logo-row">
+          <!-- Animated hex logo mark -->
+          <svg class="brand-hex" viewBox="0 0 44 44" fill="none">
+            <polygon points="22,2 40,12 40,32 22,42 4,32 4,12"
+              stroke="rgba(163,32,255,0.7)" stroke-width="1.5"
+              fill="rgba(163,32,255,0.06)"/>
+            <polygon points="22,8 36,16 36,30 22,38 8,30 8,16"
+              stroke="rgba(209,128,255,0.4)" stroke-width="1"
+              fill="rgba(163,32,255,0.04)"/>
+            <!-- Glowing centre dot -->
+            <circle cx="22" cy="22" r="6" fill="rgba(163,32,255,0.18)"/>
+            <circle cx="22" cy="22" r="3.5" fill="#a320ff"/>
+            <!-- Rotating orbit ring -->
+            <circle cx="22" cy="22" r="13"
+              stroke="rgba(163,32,255,0.3)" stroke-width="1"
+              stroke-dasharray="4 6" fill="none">
+              <animateTransform attributeName="transform" type="rotate"
+                from="0 22 22" to="360 22 22" dur="8s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+
+          <h1 class="brand-title">Pentathon 3.0</h1>
+        </div>
+
+        <span class="brand-badge">Hackathon · 2025</span>
+
+        <p class="brand-desc">
+          The premier 36-hour hackathon where innovators, coders, and
+          designers converge to build the future. Push limits. Break barriers.
+          Ship something legendary.
         </p>
 
-        <!-- Live stat pills -->
-        <div class="stat-pills">
-          <div class="stat-pill">
-            <span class="stat-num" data-target="1800">0</span>
-            <span class="stat-label">Coders</span>
+        <div class="brand-stats">
+          <div class="stat-chip">
+            <span class="stat-chip-num">36H</span>
+            <span class="stat-chip-label">Duration</span>
           </div>
-          <div class="stat-pill">
-            <span class="stat-num" data-target="500">0</span>
-            <span class="stat-label">₹ Prize (K)</span>
+          <div class="stat-chip">
+            <span class="stat-chip-num">1.8K+</span>
+            <span class="stat-chip-label">Coders</span>
           </div>
-          <div class="stat-pill">
-            <span class="stat-num" data-target="36">0</span>
-            <span class="stat-label">Hours</span>
+          <div class="stat-chip">
+            <span class="stat-chip-num">₹5L</span>
+            <span class="stat-chip-label">Prizes</span>
           </div>
-          <div class="stat-pill">
-            <span class="stat-num" data-target="6">0</span>
-            <span class="stat-label">Tracks</span>
+          <div class="stat-chip">
+            <span class="stat-chip-num">06</span>
+            <span class="stat-chip-label">Tracks</span>
           </div>
         </div>
+
+        <div class="brand-divider"></div>
       </div>
 
-      <!-- ② NAVIGATION CELL -->
-      <div class="grid-cell cell-nav">
-        <div class="cell-heading">Navigate</div>
-        <ul class="nav-list">
-          <li><a href="#">Home <span class="nav-arrow">→</span></a></li>
-          <li><a href="#">About <span class="nav-arrow">→</span></a></li>
-          <li><a href="#">Events <span class="nav-arrow">→</span></a></li>
-          <li><a href="#">Tracks <span class="nav-arrow">→</span></a></li>
-          <li><a href="#">Team <span class="nav-arrow">→</span></a></li>
-          <li><a href="#">Sponsors <span class="nav-arrow">→</span></a></li>
-          <li><a href="#">Contact <span class="nav-arrow">→</span></a></li>
+      <!-- ②  QUICK LINKS ─────────────────────────── -->
+      <div class="glass-card links-section">
+        <h3 class="footer-heading">Navigate</h3>
+        <ul class="footer-links">
+          <li><a href="#">Home     <span class="link-arrow">→</span></a></li>
+          <li><a href="#">About    <span class="link-arrow">→</span></a></li>
+          <li><a href="#">Events   <span class="link-arrow">→</span></a></li>
+          <li><a href="#">Tracks   <span class="link-arrow">→</span></a></li>
+          <li><a href="#">Team     <span class="link-arrow">→</span></a></li>
+          <li><a href="#">Sponsors <span class="link-arrow">→</span></a></li>
+          <li><a href="#">Contact  <span class="link-arrow">→</span></a></li>
         </ul>
       </div>
 
-      <!-- ③ SOCIAL + NEWSLETTER CELL -->
-      <div class="grid-cell cell-social-news">
-        <div class="cell-heading">Connect</div>
-
-        <!-- 2x2 social grid -->
+      <!-- ③  CONNECT ──────────────────────────────── -->
+      <div class="glass-card social-section">
+        <h3 class="footer-heading">Connect</h3>
         <div class="social-grid">
 
           <!-- LinkedIn -->
-          <a href="#" class="social-btn" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24"><path d="M20.447 20.452H16.89v-5.569c0-1.328-.026-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a1.98 1.98 0 0 1-1.972-1.982c0-1.09.887-1.98 1.972-1.98 1.088 0 1.972.89 1.972 1.98a1.98 1.98 0 0 1-1.972 1.982zm1.932 13.019H3.404V9h3.865v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            LinkedIn
+          <a href="https://www.linkedin.com/company/cintels-next-gen-ai/"
+             target="_blank" rel="noopener"
+             class="social-link" aria-label="LinkedIn">
+            <svg class="icon-fill" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            <span class="social-label">
+              LinkedIn
+              <span class="social-handle">Next Gen AI</span>
+            </span>
           </a>
 
-          <!-- GitHub -->
-          <a href="#" class="social-btn" aria-label="GitHub">
-            <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-            GitHub
+          <!-- Gmail -->
+          <a href="https://mail.google.com/mail/?view=cm&to=nextgenai@srmist.edu.in"
+             target="_blank" rel="noopener"
+             class="social-link" aria-label="Email">
+            <svg class="icon-stroke" viewBox="0 0 24 24">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M2 7l10 7 10-7"/>
+            </svg>
+            <span class="social-label">
+              Email Us
+              <span class="social-handle">nextgenai@srmist.edu.in</span>
+            </span>
           </a>
 
           <!-- Instagram -->
-          <a href="#" class="social-btn" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-            Instagram
+          <a href="https://www.instagram.com/next_gen.ai/"
+             target="_blank" rel="noopener"
+             class="social-link" aria-label="Instagram">
+            <svg class="icon-fill" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+            </svg>
+            <span class="social-label">
+              Instagram
+              <span class="social-handle">@next_gen.ai</span>
+            </span>
           </a>
 
-          <!-- Twitter/X -->
-          <a href="#" class="social-btn" aria-label="Twitter">
-            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            Twitter
+          <!-- Register Now — CTA -->
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScfTiN0PIckvZsPQEgZQZA2TS9VscouBtijGaiyGc2UQ9e5TA/viewform"
+             target="_blank" rel="noopener"
+             class="social-link cta-register" aria-label="Register">
+            <svg class="icon-stroke" viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/>
+              <line x1="19" y1="5" x2="19" y2="9"/>
+              <line x1="17" y1="7" x2="21" y2="7"/>
+            </svg>
+            <span class="social-label">
+              Register Now
+              <span class="social-handle">Spots filling fast ⚡</span>
+            </span>
           </a>
+
         </div>
+      </div>
 
-        <!-- Divider -->
-        <div class="cell-divider"></div>
-
-        <!-- Newsletter -->
-        <div class="nl-label">Stay in the loop</div>
-        <p class="nl-desc">Drops, deadlines, and disruption—straight to your inbox before anyone else gets it.</p>
-        <div class="nl-form">
-          <input type="email" class="nl-input" placeholder="your@email.com" aria-label="Email address" />
-          <button class="nl-btn" type="button">JOIN</button>
+      <!-- ④  NEWSLETTER ──────────────────────────── -->
+      <div class="glass-card newsletter-section">
+        <h3 class="footer-heading">Stay Updated</h3>
+        <p class="newsletter-desc">
+          Get notified about challenges, speakers, prizes, and
+          hackathon updates before anyone else. No spam, ever.
+        </p>
+        <div class="newsletter-form">
+          <div class="input-wrapper">
+            <input
+              type="email"
+              class="newsletter-input"
+              placeholder="enter your email address"
+              aria-label="Email address"
+            />
+          </div>
+          <button class="newsletter-btn" type="button">⚡ Subscribe Now</button>
+          <span class="newsletter-note">🔒 We respect your privacy. Unsubscribe anytime.</span>
         </div>
       </div>
 
     </div><!-- /footer-grid -->
-  </div><!-- /footer-wrap -->
+  </div><!-- /footer-inner -->
 
-  <!-- ── BOTTOM BAR ──────────────────────────────────────── -->
+  <!-- ══════════════════════════════════════════════
+       BOTTOM BAR
+  ══════════════════════════════════════════════ -->
   <div class="footer-bottom">
-    <div class="bottom-sep"></div>
+    <div class="footer-separator"></div>
+
     <div class="bottom-bar">
 
-      <span class="copyright">
-        © 2025 <em>Pentathon 3.0</em> · SRM Institute of Science &amp; Technology · All rights reserved
-      </span>
+      <p class="copyright">
+        © 2025 <span>Pentathon 3.0</span>. All rights reserved. Built by <span>Next Gen AI</span>.
+      </p>
 
-      <ul class="bottom-nav" aria-label="Legal links">
+      <ul class="bottom-nav">
         <li><a href="#">Privacy Policy</a></li>
         <li><a href="#">Code of Conduct</a></li>
         <li><a href="#">FAQs</a></li>
       </ul>
 
-      <div class="live-badge" aria-label="Systems online">
-        <span class="live-ring"></span>
-        SYSTEMS ONLINE
+      <div class="status-dot">
+        <span class="dot"></span>
+        Systems Online
       </div>
+
     </div>
   </div>
 
 </footer>
 
-<!-- ================================================================
-     JAVASCRIPT
-================================================================ -->
+<!-- ========================================================
+     JS — Floating particle field
+======================================================== -->
 <script>
-  /* ----------------------------------------------------------
-     1. CANVAS HEX GRID — animated, breathing hexagons
-  ---------------------------------------------------------- */
-  (function () {
-    const canvas = document.getElementById('hexCanvas');
-    const ctx = canvas.getContext('2d');
-    const HEX_SIZE = 34;
-    const HEX_GAP = 3;
-    let W, H, hexes = [];
-    const NEON = 'rgba(163,32,255,';
+(function () {
+  const canvas = document.getElementById('particleCanvas');
+  const ctx    = canvas.getContext('2d');
+  const COLORS = ['rgba(163,32,255,','rgba(209,128,255,','rgba(140,0,230,'];
+  let W, H, particles = [];
 
-    function resize() {
-      W = canvas.width  = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
-      buildGrid();
-    }
+  function rand(a, b) { return Math.random() * (b - a) + a; }
 
-    function hexCorner(cx, cy, size, i) {
-      const ang = Math.PI / 180 * (60 * i - 30);
-      return [cx + size * Math.cos(ang), cy + size * Math.sin(ang)];
-    }
+  function mkP() {
+    return {
+      x:     rand(0, W),  y:     rand(0, H),
+      r:     rand(0.8, 2.6),
+      vx:    rand(-0.2, 0.2), vy: rand(-0.45, -0.08),
+      color: COLORS[Math.floor(Math.random() * 3)],
+      life:  rand(0.4, 1), decay: rand(0.0015, 0.004),
+    };
+  }
 
-    function buildGrid() {
-      hexes = [];
-      const eff = HEX_SIZE + HEX_GAP;
-      const cols = Math.ceil(W / (eff * 1.732)) + 2;
-      const rows = Math.ceil(H / (eff * 1.5)) + 2;
-      for (let r = -1; r < rows; r++) {
-        for (let c = -1; c < cols; c++) {
-          const x = c * eff * 1.732 + (r % 2 === 0 ? 0 : eff * 0.866);
-          const y = r * eff * 1.5;
-          hexes.push({
-            x, y,
-            phase: Math.random() * Math.PI * 2,
-            speed: 0.003 + Math.random() * 0.004,
-            maxAlpha: 0.04 + Math.random() * 0.1,
-          });
-        }
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach((p, i) => {
+      p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+      const a = Math.max(0, p.life * 0.55);
+      if (p.life <= 0 || p.y < -10) {
+        particles[i] = mkP(); particles[i].y = H + 5; return;
       }
-    }
-
-    function draw(t) {
-      ctx.clearRect(0, 0, W, H);
-      hexes.forEach(h => {
-        const alpha = h.maxAlpha * (0.4 + 0.6 * Math.sin(h.phase + t * h.speed));
-        h.phase += 0.005;
-
-        ctx.beginPath();
-        for (let i = 0; i < 6; i++) {
-          const [px, py] = hexCorner(h.x, h.y, HEX_SIZE, i);
-          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-        }
-        ctx.closePath();
-        ctx.strokeStyle = NEON + alpha + ')';
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-      });
-      requestAnimationFrame(draw);
-    }
-
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas.parentElement);
-    resize();
+      // Core dot
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + a + ')'; ctx.fill();
+      // Soft halo
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + (a * 0.12) + ')'; ctx.fill();
+    });
     requestAnimationFrame(draw);
-  })();
+  }
 
-  /* ----------------------------------------------------------
-     2. TICKER DUPLICATION for seamless infinite scroll
-  ---------------------------------------------------------- */
-  (function () {
-    const track = document.getElementById('tickerTrack');
-    track.innerHTML += track.innerHTML; // duplicate for loop
-  })();
-
-  /* ----------------------------------------------------------
-     3. COUNT-UP ANIMATION for stat pills
-  ---------------------------------------------------------- */
-  (function () {
-    const els = document.querySelectorAll('.stat-num[data-target]');
-    const observed = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        const target = parseInt(el.dataset.target, 10);
-        const duration = 1600;
-        const step = 16;
-        const steps = duration / step;
-        const increment = target / steps;
-        let current = 0;
-        const timer = setInterval(() => {
-          current = Math.min(current + increment, target);
-          el.textContent = Math.round(current).toLocaleString();
-          if (current >= target) {
-            el.textContent = target.toLocaleString();
-            clearInterval(timer);
-          }
-        }, step);
-        observed.unobserve(el);
-      });
-    }, { threshold: 0.5 });
-    els.forEach(el => observed.observe(el));
-  })();
+  for (let i = 0; i < 60; i++) particles.push(mkP());
+  new ResizeObserver(resize).observe(canvas.parentElement);
+  resize(); draw();
+})();
 </script>
 
 </body>
