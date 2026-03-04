@@ -10,33 +10,24 @@
 
   <style>
     /* =========================================================
-       🎨 DESIGN SYSTEM — Pentathon 3.0  (DO NOT CHANGE)
+       DESIGN SYSTEM — Pentathon 3.0
     ========================================================= */
     :root {
       --neon:        #a320ff;
       --accent:      #d180ff;
       --neon2:       #8c00e6;
       --cyan:        #b366ff;
-
       --bg:          linear-gradient(135deg, #1a0033, #0d001a);
       --bg-dark:     #0d001a;
-
       --text:        rgba(224, 224, 224, 0.95);
       --muted:       rgba(224, 224, 224, 0.70);
-
       --glass:       rgba(40,  0,  80, 0.20);
       --glass2:      rgba(30,  0,  60, 0.15);
       --stroke:      rgba(163, 32, 255, 0.30);
       --shadow:      0 18px 55px rgba(163, 32, 255, 0.25);
-
-      --glow-strong: 0 0 8px  rgba(163,32,255,0.85),
-                     0 0 20px rgba(163,32,255,0.45),
-                     0 0 50px rgba(163,32,255,0.25);
-      --glow-soft:   0 0 6px  rgba(163,32,255,0.50),
-                     0 0 18px rgba(163,32,255,0.25);
-      --glow-hover:  0 0 12px rgba(163,32,255,0.85),
-                     0 0 30px rgba(163,32,255,0.55),
-                     0 0 60px rgba(163,32,255,0.25);
+      --glow-strong: 0 0 8px rgba(163,32,255,0.85), 0 0 20px rgba(163,32,255,0.45), 0 0 50px rgba(163,32,255,0.25);
+      --glow-soft:   0 0 6px rgba(163,32,255,0.50), 0 0 18px rgba(163,32,255,0.25);
+      --glow-hover:  0 0 12px rgba(163,32,255,0.85), 0 0 30px rgba(163,32,255,0.55), 0 0 60px rgba(163,32,255,0.25);
     }
 
     /* =========================================================
@@ -65,14 +56,13 @@
       overflow: hidden;
     }
 
-    /* Scanline texture */
     footer::before {
       content: '';
       position: absolute;
       inset: 0;
       background: repeating-linear-gradient(
         0deg,
-        transparent,          transparent 2px,
+        transparent, transparent 2px,
         rgba(163,32,255,0.015) 2px,
         rgba(163,32,255,0.015) 4px
       );
@@ -80,20 +70,17 @@
       z-index: 0;
     }
 
-    /* Bottom radial bloom */
     footer::after {
       content: '';
       position: absolute;
       bottom: -120px; left: 50%;
       transform: translateX(-50%);
       width: 900px; height: 400px;
-      background: radial-gradient(ellipse at center,
-        rgba(163,32,255,0.20) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(163,32,255,0.20) 0%, transparent 70%);
       pointer-events: none;
       z-index: 0;
     }
 
-    /* Particle canvas */
     #particleCanvas {
       position: absolute;
       inset: 0;
@@ -139,7 +126,6 @@
       overflow: hidden;
     }
 
-    /* Shine sweep */
     .glass-card::before {
       content: '';
       position: absolute;
@@ -162,7 +148,7 @@
     .glass-card > * { position: relative; z-index: 1; }
 
     /* =========================================================
-       ① BRAND
+       BRAND
     ========================================================= */
     .brand-logo-row {
       display: flex;
@@ -179,8 +165,7 @@
 
     @keyframes hexPulse {
       0%,100% { filter: drop-shadow(0 0 5px rgba(163,32,255,.7)); }
-      50%      { filter: drop-shadow(0 0 14px rgba(163,32,255,1))
-                         drop-shadow(0 0 28px rgba(163,32,255,.5)); }
+      50%      { filter: drop-shadow(0 0 14px rgba(163,32,255,1)) drop-shadow(0 0 28px rgba(163,32,255,.5)); }
     }
 
     .brand-title {
@@ -192,8 +177,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      filter: drop-shadow(0 0 8px rgba(163,32,255,.85))
-              drop-shadow(0 0 20px rgba(163,32,255,.45));
+      filter: drop-shadow(0 0 8px rgba(163,32,255,.85)) drop-shadow(0 0 20px rgba(163,32,255,.45));
       line-height: 1.2;
     }
 
@@ -230,7 +214,6 @@
       margin-bottom: 20px;
     }
 
-    /* Stat chips */
     .brand-stats {
       display: flex;
       gap: 9px;
@@ -278,7 +261,7 @@
     }
 
     /* =========================================================
-       ② QUICK LINKS
+       QUICK LINKS
     ========================================================= */
     .footer-heading {
       font-family: 'Orbitron', monospace;
@@ -348,7 +331,7 @@
     }
 
     /* =========================================================
-       ③ CONNECT / SOCIAL
+       CONNECT / SOCIAL
     ========================================================= */
     .social-grid {
       display: flex;
@@ -382,14 +365,12 @@
     }
     .social-link:hover::after { opacity: 1; }
 
-    /* filled SVG icons */
     .social-link .icon-fill {
       width: 18px; height: 18px;
       fill: var(--cyan);
       flex-shrink: 0;
       transition: filter .28s, fill .28s;
     }
-    /* stroke SVG icons (Gmail, Register) */
     .social-link .icon-stroke {
       width: 18px; height: 18px;
       fill: none;
@@ -429,21 +410,18 @@
     }
     .social-link:hover .social-handle { color: rgba(209,128,255,.6); }
 
-    /* Register CTA gets a subtle purple tint */
     .social-link.cta-register {
-      background: linear-gradient(135deg,
-        rgba(163,32,255,.13), rgba(140,0,230,.07));
+      background: linear-gradient(135deg, rgba(163,32,255,.13), rgba(140,0,230,.07));
       border-color: rgba(163,32,255,.38);
     }
     .social-link.cta-register:hover {
-      background: linear-gradient(135deg,
-        rgba(163,32,255,.24), rgba(140,0,230,.14));
+      background: linear-gradient(135deg, rgba(163,32,255,.24), rgba(140,0,230,.14));
       border-color: rgba(163,32,255,.9);
       box-shadow: var(--glow-hover);
     }
 
     /* =========================================================
-       ④ NEWSLETTER
+       NEWSLETTER
     ========================================================= */
     .newsletter-desc {
       font-size: .88rem;
@@ -487,8 +465,7 @@
     .newsletter-input::placeholder { color: rgba(224,224,224,.3); }
     .newsletter-input:focus {
       border-color: transparent;
-      box-shadow: 0 0 0 1px var(--neon), var(--glow-soft),
-                  inset 0 0 12px rgba(163,32,255,.05);
+      box-shadow: 0 0 0 1px var(--neon), var(--glow-soft), inset 0 0 12px rgba(163,32,255,.05);
     }
 
     .newsletter-btn {
@@ -538,7 +515,7 @@
     }
 
     /* =========================================================
-       SEPARATOR  — scanning beam
+       SEPARATOR
     ========================================================= */
     .footer-separator {
       width: 100%; height: 1px;
@@ -563,9 +540,9 @@
       animation: scanBeam 4s linear infinite;
     }
     @keyframes scanBeam {
-      0%   { left: 0;                   opacity: 1; }
-      85%  {                             opacity: 1; }
-      100% { left: calc(100% - 100px);  opacity: 0; }
+      0%   { left: 0; opacity: 1; }
+      85%  { opacity: 1; }
+      100% { left: calc(100% - 100px); opacity: 0; }
     }
 
     /* =========================================================
@@ -671,28 +648,20 @@
 
   <canvas id="particleCanvas"></canvas>
 
-  <!-- ══════════════════════════════════════════════
-       MAIN GRID
-  ══════════════════════════════════════════════ -->
+  <!-- MAIN GRID -->
   <div class="footer-inner">
     <div class="footer-grid">
 
-      <!-- ①  BRAND ──────────────────────────────── -->
+      <!-- BRAND -->
       <div class="glass-card brand-section">
-
         <div class="brand-logo-row">
-          <!-- Animated hex logo mark -->
           <svg class="brand-hex" viewBox="0 0 44 44" fill="none">
             <polygon points="22,2 40,12 40,32 22,42 4,32 4,12"
-              stroke="rgba(163,32,255,0.7)" stroke-width="1.5"
-              fill="rgba(163,32,255,0.06)"/>
+              stroke="rgba(163,32,255,0.7)" stroke-width="1.5" fill="rgba(163,32,255,0.06)"/>
             <polygon points="22,8 36,16 36,30 22,38 8,30 8,16"
-              stroke="rgba(209,128,255,0.4)" stroke-width="1"
-              fill="rgba(163,32,255,0.04)"/>
-            <!-- Glowing centre dot -->
+              stroke="rgba(209,128,255,0.4)" stroke-width="1" fill="rgba(163,32,255,0.04)"/>
             <circle cx="22" cy="22" r="6" fill="rgba(163,32,255,0.18)"/>
             <circle cx="22" cy="22" r="3.5" fill="#a320ff"/>
-            <!-- Rotating orbit ring -->
             <circle cx="22" cy="22" r="13"
               stroke="rgba(163,32,255,0.3)" stroke-width="1"
               stroke-dasharray="4 6" fill="none">
@@ -700,7 +669,6 @@
                 from="0 22 22" to="360 22 22" dur="8s" repeatCount="indefinite"/>
             </circle>
           </svg>
-
           <h1 class="brand-title">Pentathon 3.0</h1>
         </div>
 
@@ -722,7 +690,7 @@
             <span class="stat-chip-label">Coders</span>
           </div>
           <div class="stat-chip">
-            <span class="stat-chip-num">₹5L</span>
+            <span class="stat-chip-num">&#8377;5L</span>
             <span class="stat-chip-label">Prizes</span>
           </div>
           <div class="stat-chip">
@@ -734,29 +702,27 @@
         <div class="brand-divider"></div>
       </div>
 
-      <!-- ②  QUICK LINKS ─────────────────────────── -->
+      <!-- NAVIGATE -->
       <div class="glass-card links-section">
         <h3 class="footer-heading">Navigate</h3>
         <ul class="footer-links">
-          <li><a href="#">Home     <span class="link-arrow">→</span></a></li>
-          <li><a href="#">About    <span class="link-arrow">→</span></a></li>
-          <li><a href="#">Events   <span class="link-arrow">→</span></a></li>
-          <li><a href="#">Tracks   <span class="link-arrow">→</span></a></li>
-          <li><a href="#">Team     <span class="link-arrow">→</span></a></li>
-          <li><a href="#">Sponsors <span class="link-arrow">→</span></a></li>
-          <li><a href="#">Contact  <span class="link-arrow">→</span></a></li>
+          <li><a href="#">Home    <span class="link-arrow">&#8594;</span></a></li>
+          <li><a href="#">About   <span class="link-arrow">&#8594;</span></a></li>
+          <li><a href="#">Events  <span class="link-arrow">&#8594;</span></a></li>
+          <li><a href="#">Tracks  <span class="link-arrow">&#8594;</span></a></li>
+          <li><a href="#">Team    <span class="link-arrow">&#8594;</span></a></li>
+          <li><a href="#">Contact <span class="link-arrow">&#8594;</span></a></li>
         </ul>
       </div>
 
-      <!-- ③  CONNECT ──────────────────────────────── -->
+      <!-- CONNECT -->
       <div class="glass-card social-section">
         <h3 class="footer-heading">Connect</h3>
         <div class="social-grid">
 
           <!-- LinkedIn -->
           <a href="https://www.linkedin.com/company/cintels-next-gen-ai/"
-             target="_blank" rel="noopener"
-             class="social-link" aria-label="LinkedIn">
+             target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
             <svg class="icon-fill" viewBox="0 0 24 24">
               <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
             </svg>
@@ -767,9 +733,8 @@
           </a>
 
           <!-- Gmail -->
-          <a href="https://mail.google.com/mail/?view=cm&to=nextgenai@srmist.edu.in"
-             target="_blank" rel="noopener"
-             class="social-link" aria-label="Email">
+          <a href="https://mail.google.com/mail/?view=cm&amp;to=nextgenai@srmist.edu.in"
+             target="_blank" rel="noopener" class="social-link" aria-label="Email">
             <svg class="icon-stroke" viewBox="0 0 24 24">
               <rect x="2" y="4" width="20" height="16" rx="2"/>
               <path d="M2 7l10 7 10-7"/>
@@ -782,8 +747,7 @@
 
           <!-- Instagram -->
           <a href="https://www.instagram.com/next_gen.ai/"
-             target="_blank" rel="noopener"
-             class="social-link" aria-label="Instagram">
+             target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
             <svg class="icon-fill" viewBox="0 0 24 24">
               <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
             </svg>
@@ -793,10 +757,9 @@
             </span>
           </a>
 
-          <!-- Register Now — CTA -->
+          <!-- Register Now CTA -->
           <a href="https://docs.google.com/forms/d/e/1FAIpQLScfTiN0PIckvZsPQEgZQZA2TS9VscouBtijGaiyGc2UQ9e5TA/viewform"
-             target="_blank" rel="noopener"
-             class="social-link cta-register" aria-label="Register">
+             target="_blank" rel="noopener" class="social-link cta-register" aria-label="Register">
             <svg class="icon-stroke" viewBox="0 0 24 24">
               <circle cx="12" cy="8" r="4"/>
               <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/>
@@ -805,14 +768,14 @@
             </svg>
             <span class="social-label">
               Register Now
-              <span class="social-handle">Spots filling fast ⚡</span>
+              <span class="social-handle">Spots filling fast &#9889;</span>
             </span>
           </a>
 
         </div>
       </div>
 
-      <!-- ④  NEWSLETTER ──────────────────────────── -->
+      <!-- STAY UPDATED -->
       <div class="glass-card newsletter-section">
         <h3 class="footer-heading">Stay Updated</h3>
         <p class="newsletter-desc">
@@ -828,24 +791,21 @@
               aria-label="Email address"
             />
           </div>
-          <button class="newsletter-btn" type="button">⚡ Subscribe Now</button>
-          <span class="newsletter-note">🔒 We respect your privacy. Unsubscribe anytime.</span>
+          <button class="newsletter-btn" type="button">&#9889; Register Now</button>
+          <span class="newsletter-note">&#128274; We respect your privacy. Unsubscribe anytime.</span>
         </div>
       </div>
 
-    </div><!-- /footer-grid -->
-  </div><!-- /footer-inner -->
+    </div>
+  </div>
 
-  <!-- ══════════════════════════════════════════════
-       BOTTOM BAR
-  ══════════════════════════════════════════════ -->
+  <!-- BOTTOM BAR -->
   <div class="footer-bottom">
     <div class="footer-separator"></div>
-
     <div class="bottom-bar">
 
       <p class="copyright">
-        © 2025 <span>Pentathon 3.0</span>. All rights reserved. Built by <span>Next Gen AI</span>.
+        &copy; 2025 <span>Pentathon 3.0</span>. All rights reserved. Built by <span>Next Gen AI</span>.
       </p>
 
       <ul class="bottom-nav">
@@ -864,9 +824,6 @@
 
 </footer>
 
-<!-- ========================================================
-     JS — Floating particle field
-======================================================== -->
 <script>
 (function () {
   const canvas = document.getElementById('particleCanvas');
@@ -878,11 +835,14 @@
 
   function mkP() {
     return {
-      x:     rand(0, W),  y:     rand(0, H),
+      x:     rand(0, W),
+      y:     rand(0, H),
       r:     rand(0.8, 2.6),
-      vx:    rand(-0.2, 0.2), vy: rand(-0.45, -0.08),
+      vx:    rand(-0.2, 0.2),
+      vy:    rand(-0.45, -0.08),
       color: COLORS[Math.floor(Math.random() * 3)],
-      life:  rand(0.4, 1), decay: rand(0.0015, 0.004),
+      life:  rand(0.4, 1),
+      decay: rand(0.0015, 0.004),
     };
   }
 
@@ -893,25 +853,32 @@
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    particles.forEach((p, i) => {
-      p.x += p.vx; p.y += p.vy; p.life -= p.decay;
-      const a = Math.max(0, p.life * 0.55);
+    particles.forEach(function(p, i) {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= p.decay;
+      var a = Math.max(0, p.life * 0.55);
       if (p.life <= 0 || p.y < -10) {
-        particles[i] = mkP(); particles[i].y = H + 5; return;
+        particles[i] = mkP();
+        particles[i].y = H + 5;
+        return;
       }
-      // Core dot
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + a + ')'; ctx.fill();
-      // Soft halo
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + (a * 0.12) + ')'; ctx.fill();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + a + ')';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + (a * 0.12) + ')';
+      ctx.fill();
     });
     requestAnimationFrame(draw);
   }
 
-  for (let i = 0; i < 60; i++) particles.push(mkP());
+  for (var i = 0; i < 60; i++) particles.push(mkP());
   new ResizeObserver(resize).observe(canvas.parentElement);
-  resize(); draw();
+  resize();
+  draw();
 })();
 </script>
 
